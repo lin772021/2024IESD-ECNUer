@@ -1,0 +1,12 @@
+Train_loss
+[<tf.Tensor: shape=(), dtype=float32, numpy=0.31665882>, <tf.Tensor: shape=(), dtype=float32, numpy=0.13501064>]
+
+Train_acc
+[<tf.Tensor: shape=(), dtype=float32, numpy=0.83885443>, <tf.Tensor: shape=(), dtype=float32, numpy=0.9534514>]
+
+Test_loss
+[<tf.Tensor: shape=(), dtype=float32, numpy=0.007400852>, <tf.Tensor: shape=(), dtype=float32, numpy=0.00676171>]
+
+Test_acc
+[<tf.Tensor: shape=(), dtype=float32, numpy=0.88907105>, <tf.Tensor: shape=(), dtype=float32, numpy=0.909758>]
+
