@@ -13,7 +13,7 @@ def AFNet():
         layers.Conv2D(filters=10, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
         # layers.BatchNormalization(epsilon=1e-5, momentum=0.1),
 
-        layers.Conv2D(filters=20, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
+        layers.Conv2D(filters=15, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
         # layers.BatchNormalization(epsilon=1e-5, momentum=0.1),
 
         layers.Conv2D(filters=20, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
