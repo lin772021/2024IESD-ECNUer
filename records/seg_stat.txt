@@ -1,10 +1,10 @@
-Final F-1: 0.91857
-Final F-B: 0.94445
-Final SEN: 0.97054
-Final SPE: 0.83488
-Final BAC: 0.90271
-Final ACC: 0.95150
-Final PPV: 0.88957
-Final NPV: 0.86536
+Final F-1: 0.93287
+Final F-B: 0.95267
+Final SEN: 0.97079
+Final SPE: 0.84605
+Final BAC: 0.90842
+Final ACC: 0.95777
+Final PPV: 0.90984
+Final NPV: 0.90470
 
 G Score: 0.8571428571428571

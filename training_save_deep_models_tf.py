@@ -28,8 +28,8 @@ def main():
     # Instantiating NN
     # net = AFNet()
     net = RNN()
-    # net.build(input_shape=(32, 1250, 1, 1))
-    # net.summary()
+    net.build(input_shape=(32, 1250, 1, 1))
+    net.summary()
     optimizer = optimizers.Adam(learning_rate=LR)
     loss_object = losses.SparseCategoricalCrossentropy(from_logits=True)
 
@@ -89,7 +89,7 @@ def main():
         Test_loss.append(running_loss_test / i)
         Test_acc.append((correct / total))
     # Save model
-    net.save('./saved_models/ECG_RNN_tf_8.h5')
+    net.save('./saved_models/ECG_RNN2_tf_8.h5')
 
     # Write results to file
     file = open('./saved_models/loss_acc.txt', 'w')

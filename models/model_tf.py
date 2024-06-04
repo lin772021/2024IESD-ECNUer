@@ -29,8 +29,6 @@ def AFNet():
     return model
 
 def RNN():
-    rnn_cell = SimpleRNNCell(units=64)
-
     model = models.Sequential([
         layers.Conv2D(filters=3, kernel_size=(6, 1), strides=(2, 1), padding='valid', activation='relu'),
         layers.Conv2D(filters=5, kernel_size=(5, 1), strides=(2, 1), padding='valid', activation='relu'),
@@ -40,7 +38,9 @@ def RNN():
         
         layers.Flatten(),  # 将卷积层输出扁平化处理
         layers.Reshape((-1, 37)),
-        layers.RNN(cell=rnn_cell, return_sequences=True),
+        layers.RNN(cell=SimpleRNNCell(units=32), return_sequences=True),
+        # layers.Reshape((-1, 36)),
+        layers.RNN(cell=SimpleRNNCell(units=16), return_sequences=True),
 
         layers.Flatten(),  # 将卷积层输出扁平化处理
         layers.Dense(10, activation='relu'),
