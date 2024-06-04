@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras import models, layers, optimizers, losses
 import argparse
 from help_code_demo_tf import ECG_DataSET, ToTensor, create_dataset  # 您可能需要调整这部分，以确保数据加载和转换与 TensorFlow 兼容
-from models.model_tf import AFNet
+from models.model_tf import AFNet, RNN
 
 
 
@@ -26,7 +26,10 @@ def main():
     # tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     # Instantiating NN
-    net = AFNet()
+    # net = AFNet()
+    net = RNN()
+    net.build(input_shape=(32, 1250, 1, 1))
+    net.summary()
     optimizer = optimizers.Adam(learning_rate=LR)
     loss_object = losses.SparseCategoricalCrossentropy(from_logits=True)
 
@@ -48,6 +51,7 @@ def main():
         i = 0
         for step, (x, y) in enumerate(trainloader):
             with tf.GradientTape() as tape:
+                # x = tf.reshape(x, (tf.size(x) / 1250, 1250, 1))
                 logits = net(x, training=True)
                 loss = loss_object(y, logits)
                 grads = tape.gradient(loss, net.trainable_variables)
@@ -55,8 +59,7 @@ def main():
                 pred = tf.argmax(logits, axis=1)
                 correct += tf.reduce_sum(tf.cast(tf.equal(pred, y), tf.float32))
                 accuracy += correct / x.shape[0]
-                correct = 0.0
-
+                correct = 0.0                
                 running_loss += loss
                 i += 1
         print('[Epoch, Batches] is [%d, %5d] \nTrain Acc: %.5f Train loss: %.5f' %
@@ -86,7 +89,7 @@ def main():
         Test_loss.append(running_loss_test / i)
         Test_acc.append((correct / total))
     # Save model
-    net.save('./saved_models/ECG_net_tf.h5')
+    net.save('./saved_models/ECG_RNN_tf_10.h5')
 
     # Write results to file
     file = open('./saved_models/loss_acc.txt', 'w')
