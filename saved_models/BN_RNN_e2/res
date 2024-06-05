@@ -1,0 +1,11 @@
+BN_RNN_2.h5
+
+Final F-1: 0.91339
+Final F-B: 0.93815
+Final SEN: 0.95847
+Final SPE: 0.85064
+Final BAC: 0.90455
+Final ACC: 0.94071
+Final PPV: 0.88183
+Final NPV: 0.92907
+G Score: 0.8571428571428571

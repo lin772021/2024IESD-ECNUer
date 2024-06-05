@@ -14,6 +14,7 @@ def main():
     SIZE = args.size
     path_data = args.path_data
     path_indices = args.path_indices
+    path_net = args.path_net
     Train_loss = []
     Train_acc = []
     Test_loss = []
@@ -26,8 +27,9 @@ def main():
     # tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     # Instantiating NN
-    net = AFNet()
-    # net = RNN()
+    # net = AFNet()
+    net = RNN()
+    # net = models.load_model(path_net + 'BN_RNN_e2/BN_RNN_2.h5')
     net.build(input_shape=(32, 1250, 1, 1))
     net.summary()
     optimizer = optimizers.Adam(learning_rate=LR)
@@ -81,6 +83,7 @@ def main():
             pred = tf.argmax(logits, axis=1)
             total += y.shape[0]
             correct += tf.reduce_sum(tf.cast(tf.equal(pred, y), tf.float32))
+
             running_loss_test += test_loss
             i += x.shape[0]
 
@@ -89,7 +92,7 @@ def main():
         Test_loss.append(running_loss_test / i)
         Test_acc.append((correct / total))
         # Save model
-        net.save(f'./saved_models/ECG_CNN_tf_{epoch+1}.h5')
+        net.save(f'./saved_models/MAX_LSTM_{epoch+1}.h5')
 
     # Write results to file
     file = open('./saved_models/loss_acc.txt', 'w')
@@ -110,12 +113,13 @@ def main():
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--epoch', type=int, help='epoch number', default=10)
+    argparser.add_argument('--epoch', type=int, help='epoch number', default=20)
     argparser.add_argument('--lr', type=float, help='learning rate', default=0.001)
     argparser.add_argument('--batchsz', type=int, help='total batchsz for traindb', default=32)
     argparser.add_argument('--size', type=int, default=1250)
     argparser.add_argument('--path_data', type=str, default='../data/training_dataset/')
     argparser.add_argument('--path_indices', type=str, default='./data_indices/')
+    argparser.add_argument('--path_net', type=str, default='./saved_models/')
     args = argparser.parse_args()
 
     main()
