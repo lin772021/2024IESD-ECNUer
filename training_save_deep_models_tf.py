@@ -26,8 +26,8 @@ def main():
     # tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     # Instantiating NN
-    # net = AFNet()
-    net = RNN()
+    net = AFNet()
+    # net = RNN()
     net.build(input_shape=(32, 1250, 1, 1))
     net.summary()
     optimizer = optimizers.Adam(learning_rate=LR)
@@ -88,8 +88,8 @@ def main():
 
         Test_loss.append(running_loss_test / i)
         Test_acc.append((correct / total))
-    # Save model
-    net.save('./saved_models/ECG_RNN2_tf_8.h5')
+        # Save model
+        net.save(f'./saved_models/ECG_CNN_tf_{epoch+1}.h5')
 
     # Write results to file
     file = open('./saved_models/loss_acc.txt', 'w')
@@ -110,7 +110,7 @@ def main():
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--epoch', type=int, help='epoch number', default=8)
+    argparser.add_argument('--epoch', type=int, help='epoch number', default=10)
     argparser.add_argument('--lr', type=float, help='learning rate', default=0.001)
     argparser.add_argument('--batchsz', type=int, help='total batchsz for traindb', default=32)
     argparser.add_argument('--size', type=int, default=1250)

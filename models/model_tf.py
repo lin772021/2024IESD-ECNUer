@@ -39,10 +39,10 @@ def RNN():
         layers.Flatten(),  # 将卷积层输出扁平化处理
         layers.Reshape((-1, 37)),
         layers.RNN(cell=SimpleRNNCell(units=32), return_sequences=True),
-        # layers.Reshape((-1, 36)),
         layers.RNN(cell=SimpleRNNCell(units=16), return_sequences=True),
+        # layers.RNN(cell=SimpleRNNCell(units=10), return_sequences=True),
 
-        layers.Flatten(),  # 将卷积层输出扁平化处理
+        layers.Flatten(),
         layers.Dense(10, activation='relu'),
         layers.Dense(2)
     ])
