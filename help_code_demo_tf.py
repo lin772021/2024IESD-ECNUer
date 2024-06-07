@@ -2,6 +2,7 @@ import csv, os
 import numpy as np
 import tensorflow as tf
 from random import shuffle
+from sklearn.model_selection import KFold
 
 def ACC(mylist):
     tp, fn, fp, tn = mylist[0], mylist[1], mylist[2], mylist[3]
@@ -196,3 +197,68 @@ def create_dataset(data_cls, batch_size):
         output_types=(tf.float32, tf.int64),
         output_shapes=((1250, 1, 1), ())
     ).batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
+
+
+
+class ECG_DataSET_kfold():
+    def __init__(self, root_dir, indice_dir, mode, size, subject_id=None, transform=None):
+        self.root_dir = root_dir
+        self.indice_dir = indice_dir
+        self.size = size
+        self.names_list = []
+        self.transform = transform
+        self.fold_count = 10  # 默认10折交叉验证
+
+        csvdata_all = loadCSV(os.path.join(self.indice_dir, mode + '_indice.csv'))
+
+        for i, (k, v) in enumerate(csvdata_all.items()):
+            full_path = os.path.join(root_dir, k)
+            # Check if the subject ID matches
+            if subject_id is not None and k.startswith(subject_id):
+                self.names_list.extend([(full_path, int(v[0]))])
+                # print()
+            elif subject_id is None:
+                self.names_list.append((full_path, int(v[0])))
+                # print()
+        if subject_id is None:
+            shuffle(self.names_list) # shuffle the dataset
+        # print()
+        self.kfold = KFold(n_splits=self.fold_count)
+        self.fold_indices = list(self.kfold.split([x[0] for x in self.names_list], [x[1] for x in self.names_list]))
+
+    def __len__(self):
+        return len(self.names_list)
+
+    def __getitem__(self, idx):
+        filepath, label = self.names_list[idx]
+        if not os.path.isfile(filepath):
+            print(f'{filepath} does not exist')
+            return None
+
+        data = np.loadtxt(filepath).astype(np.float32).reshape(-1, 1, 1)  # 调整reshape，确保维度正确
+        if self.transform:
+            data = self.transform({'ECG_seg': data, 'label': label})
+        return data
+
+def create_dataset_kold(data_cls, batch_size, fold_index):
+    train_index, val_index = fold_index
+    train_data = [data_cls[i] for i in train_index]
+    val_data = [data_cls[i] for i in val_index]
+    
+    def gen(dataset):
+        for sample in dataset:
+            yield sample['ECG_seg'], sample['label']
+
+    train_dataset = tf.data.Dataset.from_generator(
+        lambda:gen(train_data),
+        output_types=(tf.float32, tf.int64),
+        output_shapes=((1250, 1, 1), ())
+    ).batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
+
+    val_dataset = tf.data.Dataset.from_generator(
+        lambda:gen(val_data),
+        output_types=(tf.float32, tf.int64),
+        output_shapes=((1250, 1, 1), ())
+    ).batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
+
+    return train_dataset, val_dataset
