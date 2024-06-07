@@ -1,6 +1,6 @@
 import tensorflow as tf
 # Create a model using high-level tf.keras.* APIs
-model = tf.keras.models.load_model('./saved_models/Reshape_1.h5')
+model = tf.keras.models.load_model('./saved_models/RNN2/ECG_RNN_tf_8.h5')
 
 # Convert the model.
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
@@ -10,5 +10,5 @@ converter._experimental_lower_tensor_list_ops = False
 tflite_model = converter.convert()
 
 # Save the model.
-with open('saved_models/Reshape_1.tflite', 'wb') as f:
+with open('saved_models/ECG_RNN_tf_8.tflite', 'wb') as f:
   f.write(tflite_model)

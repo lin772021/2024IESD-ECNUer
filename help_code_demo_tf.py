@@ -128,7 +128,6 @@ def loadCSV(csvf):
     return dictLabels
 
 
-
 def txt_to_numpy(filename, row):
     file = open(filename)
     lines = file.readlines()
@@ -170,7 +169,7 @@ class ECG_DataSET():
                 # print()
         if subject_id is None:
             shuffle(self.names_list)
-        # print()
+        print()
 
     def __len__(self):
         return len(self.names_list)

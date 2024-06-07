@@ -92,21 +92,26 @@ def RNN3():
 def RNN():
     model = models.Sequential([
         layers.Conv2D(filters=3, kernel_size=(6, 1), strides=(2, 1), padding='valid', activation='relu'),
-        layers.MaxPooling2D(pool_size=(2, 1), strides=(2, 1), padding='valid'),
+        layers.MaxPool2D(pool_size=(2, 1), strides=(2, 1), padding='valid'),
         layers.Conv2D(filters=5, kernel_size=(5, 1), strides=(2, 1), padding='valid', activation='relu'),
+        layers.MaxPool2D(pool_size=(2, 1), strides=(2, 1), padding='valid'),
         layers.Conv2D(filters=10, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
+        # layers.MaxPool2D(pool_size=(2, 1), strides=(2, 1), padding='valid'),
         layers.Conv2D(filters=15, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
+        # layers.MaxPool2D(pool_size=(2, 1), strides=(2, 1), padding='valid'),
         layers.Conv2D(filters=20, kernel_size=(4, 1), strides=(2, 1), padding='valid', activation='relu'),
+        # layers.MaxPool2D(pool_size=(2, 1), strides=(2, 1), padding='valid'),
         
         layers.Flatten(),  # 将卷积层输出扁平化处理
-        layers.Reshape((-1, 17)),
+        layers.Reshape((-1, 35)),
         # layers.RNN(cell=SimpleRNNCell(units=32), return_sequences=True),
         # layers.RNN(cell=SimpleRNNCell(units=16), return_sequences=True),
-        layers.LSTM(units=32, return_sequences=False),
+        layers.LSTM(units=32, return_sequences=True),
 
         layers.Flatten(),
         layers.Dense(10, activation='relu'),
-        layers.Dense(2)
+        # layers.Dense(2),
+        layers.Dense(1, activation='sigmoid')
     ])
 
     return model

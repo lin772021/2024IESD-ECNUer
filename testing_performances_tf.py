@@ -35,7 +35,7 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + 'MAX_LSTM_5.h5')
+    net = models.load_model(path_net + 'MAX_LSTM.h5')
 
     subjects_above_threshold = 0
 
@@ -59,7 +59,8 @@ def main():
 
         for ECG_test, labels_test in testloader:
             predictions = net(ECG_test, training=False)
-            predicted_test = tf.argmax(predictions, axis=1)
+            # predicted_test = tf.argmax(predictions, axis=1)
+            predicted_test = tf.cast(predictions > 0.55, tf.int32)
 
             seg_label = labels_test.numpy()[0]
 
