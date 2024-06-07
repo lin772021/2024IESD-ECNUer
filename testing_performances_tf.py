@@ -35,7 +35,7 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + 'ECG_net_tf.h5')
+    net = models.load_model(path_net + '5CNN_1MAXPOOL_1_5_5.h5')
 
     subjects_above_threshold = 0
 

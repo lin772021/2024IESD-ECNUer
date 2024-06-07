@@ -86,7 +86,7 @@ def main():
         Test_loss.append(running_loss_test / i)
         Test_acc.append((correct / total))
     # Save model
-    net.save('./saved_models/ECG_net_tf.h5')
+    net.save('./saved_models/5CNN_1MAXPOOL_1_5_5.h5')
 
     # Write results to file
     file = open('./saved_models/loss_acc.txt', 'w')
@@ -107,7 +107,7 @@ def main():
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--epoch', type=int, help='epoch number', default=2)
+    argparser.add_argument('--epoch', type=int, help='epoch number', default=10)
     argparser.add_argument('--lr', type=float, help='learning rate', default=0.001)
     argparser.add_argument('--batchsz', type=int, help='total batchsz for traindb', default=32)
     argparser.add_argument('--size', type=int, default=1250)
