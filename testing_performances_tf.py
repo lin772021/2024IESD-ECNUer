@@ -10,10 +10,10 @@ from models.model_tf import AFNet
 
 
 def main():
-    seed = 222
-    tf.random.set_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
+    # seed = 222
+    # tf.random.set_seed(seed)
+    # np.random.seed(seed)
+    # random.seed(seed)
 
     # Hyperparameters
     BATCH_SIZE_TEST = 1
@@ -35,14 +35,14 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + 'MAX_LSTM.h5')
+    net = models.load_model(path_net + 'CNN_acc.h5')
 
     subjects_above_threshold = 0
 
     print(subjects)
     test_counter = 0
     for subject_id in subjects:
-        print(subject_id)
+        # print(subject_id)
         testset = ECG_DataSET(root_dir=path_data,
                                indice_dir=path_indices,
                                mode='test',
@@ -59,8 +59,8 @@ def main():
 
         for ECG_test, labels_test in testloader:
             predictions = net(ECG_test, training=False)
-            # predicted_test = tf.argmax(predictions, axis=1)
-            predicted_test = tf.cast(predictions > 0.55, tf.int32)
+            predicted_test = tf.argmax(predictions, axis=1)
+            # predicted_test = tf.cast(predictions > 0.55, tf.int32)
 
             seg_label = labels_test.numpy()[0]
 
@@ -87,6 +87,7 @@ def main():
         subject_metrics.append([f1, fb, se, sp, bac, acc, ppv, npv])
         if fb > 0.9:
             subjects_above_threshold += 1
+        print(f'{subject_id}: {fb}')
 
     subject_metrics_array = np.array(subject_metrics)
     average_metrics = np.mean(subject_metrics_array, axis=0)
