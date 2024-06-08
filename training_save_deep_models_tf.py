@@ -35,14 +35,13 @@ def main():
     # tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     # Instantiating NN
-    net = AFNet()
+    net = CNN_AF()
     # net = models.load_model(path_net + 'CNN_fb_1.h5')
     # net.compile(
     #             optimizer="adam",
     #             # loss="sparse_categorical_crossentropy",
     #             loss="binary_crossentropy",
     #             metrics=['accuracy', Precision(), Recall()])
-                # metrics=["accuracy"])
     net.build(input_shape=(32, 1250, 1, 1))
     net.summary()
 
@@ -50,7 +49,7 @@ def main():
     loss_object = losses.SparseCategoricalCrossentropy(from_logits=True)
 
     # Start dataset loading
-    trainset = ECG_DataSET(root_dir=path_data, indice_dir=path_indices, mode='train', size=SIZE, transform=ToTensor())
+    trainset = ECG_DataSET(root_dir=path_data, indice_dir=path_indices, mode='all', size=SIZE, transform=ToTensor())
     trainloader = create_dataset(trainset, BATCH_SIZE)
     # trainloader = trainloader.shuffle(buffer_size=1000).batch(BATCH_SIZE).prefetch(tf.data.experimental.AUTOTUNE)
 

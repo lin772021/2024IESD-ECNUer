@@ -180,7 +180,13 @@ class ECG_DataSET():
             print(f'{filepath} does not exist')
             return None
 
-        data = np.loadtxt(filepath).astype(np.float32).reshape(-1, 1, 1)  # 调整reshape，确保维度正确
+        data = np.loadtxt(filepath).astype(np.float32) # .reshape(-1, 1, 1)  # 调整reshape，确保维度正确
+        
+        # Normalize
+        # data = (data - data.mean()) / data.std()
+        # data = (data - data.min()) / (data.max() - data.min())
+        data = data.reshape(-1, 1, 1)
+
         if self.transform:
             data = self.transform({'ECG_seg': data, 'label': label})
         return data
