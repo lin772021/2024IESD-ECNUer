@@ -7,13 +7,13 @@ from tensorflow.keras.utils import custom_object_scope
 import tensorflow as tf
 from help_code_demo_tf import ECG_DataSET, ToTensor, create_dataset, F1, FB, Sensitivity, Specificity, BAC, ACC, PPV, NPV
 from models.model_tf import AFNet
-
+import os
 
 def main():
-    seed = 222
-    tf.random.set_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
+    # seed = 222
+    # tf.random.set_seed(seed)
+    # np.random.seed(seed)
+    # random.seed(seed)
 
     # Hyperparameters
     BATCH_SIZE_TEST = 1
@@ -35,12 +35,14 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + '5CNN_1MAXPOOL_1_5_5.h5')
-
+    net = models.load_model(path_net + 'CNN_acc.h5')
+    net.summary()
+    
     subjects_above_threshold = 0
 
     print(subjects)
     test_counter = 0
+    false_indice = []
     for subject_id in subjects:
         print(subject_id)
         testset = ECG_DataSET(root_dir=path_data,
@@ -57,6 +59,7 @@ def main():
         segs_FP = 0
         segs_FN = 0
 
+        i = 0
         for ECG_test, labels_test in testloader:
             predictions = net(ECG_test, training=False)
             predicted_test = tf.argmax(predictions, axis=1)
@@ -70,7 +73,11 @@ def main():
                 segs_FN += np.sum(predicted_test.numpy() != labels_test.numpy())
                 segs_TP += np.sum(predicted_test.numpy() == labels_test.numpy())
 
+            # if subject_id == 'S68' and predicted_test.numpy() != labels_test.numpy():
+            #     with open('./data_indices/false_indice.txt', 'a', encoding='utf-8') as file:              
+            #           file.write(f'{i}\n')
             test_counter += 1
+            # i += 1
             # print(predictions, test_counter)
 
         # Calculate metrics for the current participant
@@ -86,6 +93,8 @@ def main():
         subject_metrics.append([f1, fb, se, sp, bac, acc, ppv, npv])
         if fb > 0.9:
             subjects_above_threshold += 1
+        else:
+            print(fb)
 
     subject_metrics_array = np.array(subject_metrics)
     average_metrics = np.mean(subject_metrics_array, axis=0)

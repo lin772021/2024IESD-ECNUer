@@ -23,7 +23,7 @@ def main():
     path_net = args.path_net
     path_indices = args.path_indices
 
-    test_indice_path = args.path_indices + 'test_kfold_indice.csv'
+    test_indice_path = args.path_indices + 'test_indice.csv'
     test_indices = pd.read_csv(test_indice_path)  # Adjust delimiter if necessary
 
     # physical_devices = tf.config.list_physical_devices('GPU')
@@ -35,7 +35,7 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + 'kfold_5.h5')
+    net = models.load_model(path_net + 'kfold_5_1.h5')
 
     subjects_above_threshold = 0
 
@@ -45,7 +45,7 @@ def main():
         print(subject_id)
         testset = ECG_DataSET(root_dir=path_data,
                                indice_dir=path_indices,
-                               mode='test_kfold',
+                               mode='test',
                                size=SIZE,
                                subject_id=subject_id,
                                transform=ToTensor())

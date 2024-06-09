@@ -78,7 +78,7 @@ def main():
             if correct / total > best_val_acc:
                 best_val_acc = correct / total
                 # Save model
-                net.save('./saved_models/kfold_5.h5')
+                net.save('./saved_models/kfold_5_1.h5')
 
     # Write results to file
     file = open('./saved_models/kfold_loss_acc.txt', 'w')
