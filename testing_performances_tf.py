@@ -35,7 +35,7 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + 'AFNet_acc_28.h5')
+    net = models.load_model(path_net + 'CNNAF_SWA.h5')
 
     subjects_above_threshold = 0
 
@@ -60,9 +60,12 @@ def main():
         for ECG_test, labels_test in testloader:
             predictions = net(ECG_test, training=False)
             predicted_test = tf.argmax(predictions, axis=1)
-            # predicted_test = tf.cast(predictions > 0.55, tf.int32)
+            # predicted_test = tf.cast(predictions > 0.5, tf.int32)
 
             seg_label = labels_test.numpy()[0]
+
+            # if subject_id == 'S68' and predicted_test != seg_label:
+            #     print(predicted_test, seg_label)
 
             if seg_label == 0:
                 segs_FP += np.sum(predicted_test.numpy() != labels_test.numpy())
