@@ -35,9 +35,9 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    model_indice = [2, 5, 7, 8, 12, 15, 16, 22, 24, 25, 28]
+    model_indice = [1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 15, 20, 21, 25, 27]
     for index in model_indice:
-        net = models.load_model(path_net + f'AFNet_acc_{index}.h5')
+        net = models.load_model(path_net + f'LSTM_seed_all_2_acc_{index}.h5')
         # net.summary()
         
         subjects_above_threshold = 0
@@ -116,7 +116,7 @@ def main():
         proportion_above_threshold = subjects_above_threshold / len(subjects)
         print("G Score:", proportion_above_threshold)
 
-        with open(path_records + 'choose_model.txt', 'a') as f:
+        with open(path_records + 'LSTM_all_choose_model_2.txt', 'a') as f:
             f.write(f"Indice: {index}\n")
             f.write(f"Final F-B: {avg_fb:.5f}\n")
             f.write(f"G Score: {proportion_above_threshold}\n")
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--size', type=int, default=1250)
     argparser.add_argument('--path_data', type=str, default='../data/training_dataset/')
-    argparser.add_argument('--path_net', type=str, default='./saved_models/AF/')
+    argparser.add_argument('--path_net', type=str, default='./saved_models/LSTM_seed_all_2/')
     argparser.add_argument('--path_record', type=str, default='./records/')
     argparser.add_argument('--path_indices', type=str, default='./data_indices/')
     args = argparser.parse_args()

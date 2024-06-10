@@ -35,7 +35,7 @@ def main():
     subject_metrics = []
 
     # Load trained network
-    net = models.load_model(path_net + 'CNN_acc.h5')
+    net = models.load_model(path_net + 'AFNet_acc_28.h5')
     net.summary()
     
     subjects_above_threshold = 0
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--size', type=int, default=1250)
     argparser.add_argument('--path_data', type=str, default='../data/training_dataset/')
-    argparser.add_argument('--path_net', type=str, default='./saved_models/')
+    argparser.add_argument('--path_net', type=str, default='./saved_models/AF/')
     argparser.add_argument('--path_record', type=str, default='./records/')
     argparser.add_argument('--path_indices', type=str, default='./data_indices/')
     args = argparser.parse_args()

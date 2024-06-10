@@ -1,0 +1,9 @@
+Indice: 1
+Final F-B: 0.93574
+G Score: 0.7857142857142857
+Indice: 2
+Final F-B: 0.94133
+G Score: 0.8571428571428571
+Indice: 3
+Final F-B: 0.94223
+G Score: 0.8571428571428571

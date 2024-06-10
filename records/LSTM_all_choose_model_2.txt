@@ -1,0 +1,48 @@
+Indice: 1
+Final F-B: 0.96070
+G Score: 0.8571428571428571
+Indice: 2
+Final F-B: 0.96433
+G Score: 0.9285714285714286
+Indice: 3
+Final F-B: 0.96495
+G Score: 0.9285714285714286
+Indice: 4
+Final F-B: 0.96636
+G Score: 0.9285714285714286
+Indice: 5
+Final F-B: 0.96765
+G Score: 0.9285714285714286
+Indice: 7
+Final F-B: 0.96855
+G Score: 0.9285714285714286
+Indice: 8
+Final F-B: 0.96983
+G Score: 0.9285714285714286
+Indice: 10
+Final F-B: 0.97067
+G Score: 0.9285714285714286
+Indice: 11
+Final F-B: 0.97229
+G Score: 1.0
+Indice: 12
+Final F-B: 0.97229
+G Score: 1.0
+Indice: 13
+Final F-B: 0.97395
+G Score: 0.9285714285714286
+Indice: 15
+Final F-B: 0.97477
+G Score: 1.0
+Indice: 20
+Final F-B: 0.97543
+G Score: 0.9285714285714286
+Indice: 21
+Final F-B: 0.97654
+G Score: 1.0
+Indice: 25
+Final F-B: 0.97739
+G Score: 1.0
+Indice: 27
+Final F-B: 0.97794
+G Score: 0.9285714285714286

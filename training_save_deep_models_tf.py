@@ -10,10 +10,10 @@ from help_code_demo_tf import FB
 import random
 
 def main():
-    # seed = 222
-    # tf.random.set_seed(seed)
-    # np.random.seed(seed)
-    # random.seed(seed)
+    seed = 222
+    tf.random.set_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
 
     # Hyperparameters
     BATCH_SIZE = args.batchsz
@@ -35,7 +35,7 @@ def main():
     # tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
     # Instantiating NN
-    net = CNN_AF()
+    net = CNNLSTM()
     # net = models.load_model(path_net + 'CNN_fb_1.h5')
     # net.compile(
     #             optimizer="adam",
@@ -43,8 +43,8 @@ def main():
     #             loss="binary_crossentropy",
     #             metrics=['accuracy', Precision(), Recall()])
                 # metrics=["accuracy"])
-    # net.build(input_shape=(32, 1250, 1, 1))
-    # net.summary()
+    net.build(input_shape=(32, 1250, 1, 1))
+    net.summary()
 
     optimizer = optimizers.Adam(learning_rate=LR)
     loss_object = losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -135,11 +135,11 @@ def main():
         Test_acc.append((correct / total))
         # Save model
         if Test_acc[epoch] > best_acc:
-            net.save(f'./saved_models/AF/CNN_AF_acc_{epoch+1}.h5')
+            net.save(f'./saved_models/LSTM_seed_all_2/LSTM_seed_all_2_acc_{epoch+1}.h5')
             best_acc = Test_acc[epoch]
             print(f"=====\nBest acc model saved at Epoch: {epoch + 1}\n=====")
         if fb > best_fb:
-            net.save(f'./saved_models/AF/CNN_AF_fb_{epoch+1}.h5')
+            net.save(f'./saved_models/LSTM_seed_all_2/LSTM_seed_all_2_fb_{epoch+1}.h5')
             best_fb = fb
             print(f"=====\nBest fb model saved at Epoch: {epoch + 1}\n=====")
 
