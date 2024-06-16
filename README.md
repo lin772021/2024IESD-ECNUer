@@ -57,9 +57,9 @@
 
 ### 模型训练
 
-数据集放置路径为`../data/training_dataset/`。环境配置方法如下。
+环境配置说明见`./train/requirements.txt`。
 
-    pip install requirements.txt
+    pip install ./train/requirements.txt
 
 配置完毕后，进入训练文件夹`./train`。
 
