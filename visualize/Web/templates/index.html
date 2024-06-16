@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classification Results</title>
+  <link rel="stylesheet" href="../static/styles.css"> <!-- 引入 CSS 文件 -->
+  <script src="../static/iconfont.js"></script>
+  <script src="../static/echarts.min.js"></script>
+</head>
+
+<body>
+  <div style="background-color: #f0f0f0; padding: 10px;">
+    <div style="text-decoration: none; color: black; text-align:center; font-size:26px">Model Test</div>
+  </div>
+  <div style="display: flex">
+
+    <div style="margin-top:50px">
+      <div id="chart" style="width: 1000px; height: 700px;"></div>
+    </div>
+    <div style="display: flex; flex-direction: column;flex-grow: 1;">
+      <h1 style="justify-content: center; display: flex;">Classification Results</h1>
+      <div>
+        <button id="Single_Step_Button" style="margin-left:50px;margin-right: 360px;font-size: 24px;">Next</button>
+
+        <!-- <button id="Full_Speed_Button" style="font-size: 24px;">Full Speed</button> -->
+      </div>
+      
+      <div style="margin: 20px;">
+        <ul>
+          <li>Peaks Count:&ensp;{{features[0]}}</li>
+          <li>Diff_max:&ensp;{{features[1]}}</li>
+          <li>Diff_min:&ensp;{{features[2]}}</li>
+          <li>Diff_average:&ensp;{{features[3]}}</li>
+          <li>Amp_max:&ensp;{{features[4]}}</li>
+          <li>Amp_min:&ensp;{{features[5]}}</li>
+          <li>Amp_diff:&ensp;{{features[6]}}</li>
+          <li>Amp_average:&ensp;{{features[7]}}</li>
+          </ul>
+      </div>
+      <div style="display: flex; justify-content: space-around;margin-top: 25px;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <h2>Ture Label</h2>
+          {% if y_true == 1%}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-duihao"></use>
+            </svg>
+          {% else %}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-chahao"></use>
+            </svg>
+          {% endif %}
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <h2>CNN</h2>
+          {% if cnn_pred == y_true %}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-duihao"></use>
+            </svg>
+          {% else %}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-chahao"></use>
+            </svg>
+          {% endif %}
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <h2>LSTM</h2>
+          {% if lstm_pred == y_true %}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-duihao"></use>
+            </svg>
+          {% else %}
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-chahao"></use>
+            </svg>
+          {% endif %}
+        </div>
+      </div>    
+      <!-- <div id="result_chart" style="width: 800px; height: 500px;"></div>   -->
+    </div>
+  </div>
+  {{ script | safe }}
+  <script src="{{url_for('static',filename='button.js')}}"></script> <!-- 引入 JavaScript 文件 -->
+  <script type="text/javascript">
+    // 在页面加载完成后执行
+    // document.addEventListener('DOMContentLoaded', function() {
+    // 获取图表容器
+    var chartContainer = document.getElementById('chart');
+
+    // 创建 ECharts 实例
+    var chart = echarts.init(chartContainer);
+    var data = {{ data | tojson | safe }};
+    var filename = {{filename | tojson | safe}};
+    
+    // 配置图表选项
+    var options = {
+      title: {
+        text: filename,
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: {
+        type: 'category',
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: data,
+        type: 'line',
+        symbol: 'none'
+      }]
+    };
+
+    // 使用配置选项渲染图表
+    chart.setOption(options);
+    // });
+    
+  </script>
+</body>
+
+</html>

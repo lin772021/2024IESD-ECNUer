@@ -141,7 +141,7 @@ void setup() {
   // This relies on a complete list of all the ops needed by this graph.
 
   // NOLINTNEXTLINE(runtime-global-variables)
-  static tflite::MicroMutableOpResolver<8> micro_op_resolver;
+  static tflite::MicroMutableOpResolver<10> micro_op_resolver;
   micro_op_resolver.AddConv2D();
   micro_op_resolver.AddDepthwiseConv2D();
   micro_op_resolver.AddReshape();
@@ -150,8 +150,8 @@ void setup() {
   micro_op_resolver.AddShape();
   micro_op_resolver.AddAdd();
   micro_op_resolver.AddMul();
-//   micro_op_resolver.AddUnidirectionalSequenceLSTM();
-//   micro_op_resolver.AddStridedSlice();
+  micro_op_resolver.AddUnidirectionalSequenceLSTM();
+  micro_op_resolver.AddStridedSlice();
   // Build an interpreter to run the model with.
   // NOLINTNEXTLINE(runtime-global-variables)
   static tflite::MicroInterpreter static_interpreter(

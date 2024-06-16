@@ -3,6 +3,20 @@ import numpy as np
 import tensorflow as tf
 from random import shuffle
 from sklearn.model_selection import KFold
+from scipy.fftpack import fft
+
+
+def myfft(x):
+    fft_x = fft(x)                                            #  fft计算
+    amp_x = abs(fft_x)/len(x)*2                                 # 纵坐标变换
+    label_x = np.linspace(0,int(len(x)/2)-1,int(len(x)/2))    # 生成频率坐标
+    # amp = amp_x[0:int(len(x)/2)]                              # 选取前半段计算结果即可
+    # amp[0] = 0                                              # 可选择是否去除直流量信号
+    fs = 250                                                  # 采样率250hz
+    fre = label_x/len(x)*fs                                   # 频率坐标变换
+    # pha = np.unwrap(np.angle(fft_x))                          # 计算相位角并去除2pi跃变
+    return amp_x
+
 
 def ACC(mylist):
     tp, fn, fp, tn = mylist[0], mylist[1], mylist[2], mylist[3]
@@ -83,6 +97,7 @@ def FB(mylist, beta=2):
         f1 = (1+beta**2) * (precision * recall) / ((beta**2)*precision + recall)
     return f1
 
+
 def stats_report(mylist):
     f1 = round(F1(mylist), 5)
     fb = round(FB(mylist), 5)
@@ -114,6 +129,7 @@ def stats_report(mylist):
 
     return output
 
+
 def loadCSV(csvf):
     dictLabels = {}
     with open(csvf, 'r') as csvfile:
@@ -129,7 +145,6 @@ def loadCSV(csvf):
     return dictLabels
 
 
-
 def txt_to_numpy(filename, row):
     file = open(filename)
     lines = file.readlines()
@@ -139,7 +154,8 @@ def txt_to_numpy(filename, row):
         line = line.strip().split(' ')
         datamat[row_count] = line[0]
         row_count += 1
-
+    # Add FFT
+    # datamat = myfft(datamat)
     return datamat
 
 
@@ -182,10 +198,16 @@ class ECG_DataSET():
             print(f'{filepath} does not exist')
             return None
 
-        data = np.loadtxt(filepath).astype(np.float32).reshape(-1, 1, 1)  # 调整reshape，确保维度正确
+        data = np.loadtxt(filepath).astype(np.float32)
+        # Normalize
+        # data = (data - data.mean()) / data.std()
+        # data = (data - data.min()) / (data.max() - data.min())
+        data = data.reshape(-1, 1, 1)
+
         if self.transform:
             data = self.transform({'ECG_seg': data, 'label': label})
         return data
+
 
 def create_dataset(data_cls, batch_size):
     def gen():
@@ -197,7 +219,6 @@ def create_dataset(data_cls, batch_size):
         output_types=(tf.float32, tf.int64),
         output_shapes=((1250, 1, 1), ())
     ).batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
-
 
 
 class ECG_DataSET_kfold():
@@ -239,6 +260,7 @@ class ECG_DataSET_kfold():
         if self.transform:
             data = self.transform({'ECG_seg': data, 'label': label})
         return data
+
 
 def create_dataset_kold(data_cls, batch_size, fold_index):
     train_index, val_index = fold_index

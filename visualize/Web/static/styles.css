@@ -1,0 +1,29 @@
+/* 设置按钮的基本样式 */
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.3s;
+  /* 添加过渡效果 */
+}
+
+/* 当鼠标悬停在按钮上时，设置阴影效果 */
+button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.icon {
+  width: 3em;
+  height: 3em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+ul li {
+  font-size: 26px;
+  font-family: 'Times New Roman';
+}

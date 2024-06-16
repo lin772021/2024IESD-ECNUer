@@ -2,8 +2,8 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 
 
-def CNN_AF():
-    initializer = tf.keras.initializers.HeNormal(seed=648)
+def CNN_AF(seed):
+    initializer = tf.keras.initializers.HeNormal(seed=seed)
 
     model = models.Sequential([
         layers.Conv2D(filters=3, kernel_size=(5, 1), strides=(1, 1), padding='valid', activation='relu', kernel_initializer=initializer),
@@ -32,6 +32,6 @@ def CNN_AF():
         layers.Dense(100, activation='relu', kernel_initializer=initializer), #, kernel_regularizer=tf.keras.regularizers.l2(0.01)),
         layers.Dense(10, activation='relu', kernel_initializer=initializer), #, kernel_regularizer=tf.keras.regularizers.l2(0.01)),
         layers.Dense(2),
-    ])
+    ], name = f'CNN_AF_{seed}')
 
     return model
