@@ -92,7 +92,7 @@
 
 ### 测试数据可视化
 
-进入`./visualize/Web`文件夹，并运行app.py文件，即可看到可视化结果。
+进入`./visualize/Web`文件夹，并运行app.py文件，即可看到可视化结果。目前展示的是对被试`S68`的心电数据的分类结果。
 
 ```
 cd visualize/Web
