@@ -32,6 +32,6 @@ def CNN_AF(seed):
         layers.Dense(100, activation='relu', kernel_initializer=initializer), #, kernel_regularizer=tf.keras.regularizers.l2(0.01)),
         layers.Dense(10, activation='relu', kernel_initializer=initializer), #, kernel_regularizer=tf.keras.regularizers.l2(0.01)),
         layers.Dense(2),
-    ], name = f'CNN_AF_FFT_{seed}')
+    ], name = f'CNN_AF_{seed}')
 
     return model

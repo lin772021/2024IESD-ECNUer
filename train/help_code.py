@@ -154,8 +154,6 @@ def txt_to_numpy(filename, row):
         line = line.strip().split(' ')
         datamat[row_count] = line[0]
         row_count += 1
-    # Add FFT
-    # datamat = myfft(datamat)
     return datamat
 
 
@@ -200,7 +198,7 @@ class ECG_DataSET():
 
         data = np.loadtxt(filepath).astype(np.float32)
         # FFT
-        data = myfft(data)
+        # data = myfft(data)
         # 归一化
         # data = (data - data.min()) / (data.max() - data.min())
         # 标准化

@@ -69,7 +69,7 @@ def main():
     # Instantiating NN
     # 
     # nets = [CNN_AF(seed), CNN_RNN1(seed), CNN_RNN2(seed), CNN_RNN3(seed), CNN_LSTM(seed)]
-    nets = [CNN_AF(seed)]
+    nets = [CNN_AF(seed), CNN_AF(345), CNN_AF(821)]
     # net = models.load_model(path_net + '.h5')
     # net.build(input_shape=(32, 1250, 1, 1))
     # net.summary()
@@ -224,7 +224,7 @@ def main():
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--seed', type=int, help='random seed', default=226)
+    argparser.add_argument('--seed', type=int, help='random seed', default=38)
     argparser.add_argument('--epoch', type=int, help='epoch number', default=30)
     argparser.add_argument('--lr', type=float, help='learning rate', default=0.001)
     argparser.add_argument('--batchsz', type=int, help='total batchsz for traindb', default=32)
