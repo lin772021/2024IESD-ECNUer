@@ -12,7 +12,7 @@
 
 [本仓库](https://github.com/lin772021/IESD-CONTEST-TF)是[2024 IESD大赛](https://iesdcontest.github.io/iesd-2024/index.html)的提交。本项目是基于人工智能算法的房颤检测模型的设计与实现，整体完成情况如下。
 
-- 探索了**经典-量子混合神经网络模型**在该问题上的应用潜力；
+- 探索了**经典-量子混合神经网络模型**（Hybrid-QNN）在该问题上的应用潜力；
 
 - 通过调研，设计了基于**卷积神经网络**的经典模型，包括CNN、CNN-LSTM、CNN-RNN；
 
@@ -20,7 +20,16 @@
 
 - 开发了**测试数据可视化工具**，可视化心电图、心电数据医学特征和模型测试结果，可用于协助模型调试。
 
-按照大赛评分标准，本项目所提交的模型得分为：
+我们自行测试各种不同的模型得到结果如下。
+
+| 模型名称   | $F_\beta$   | G Score   | 参数量   | 推理延迟（ms）|
+|-------|-------|-------|-------|-------|
+| Hybrid-QNN | 0.94707 | 10/14 | 2,246+85（9.11 KB） | / |
+| CNN | 0.95554 | 13/14 | 74,562（291.26 KB）| 12.478 |
+| CNN-LSTM | 0.95534 | 13/14 | 13,862（54.15 KB）| 38.637 |
+| CNN-RNN | 0.95267 | 12/14 | 8,614（33.65KB）| / |
+
+据此，我们选择了$F_\beta$与G score得分较好，且推理延迟较低的CNN模型进行提交。按照大赛[评分标准](https://iesdcontest.github.io/iesd-2024/Problems.html#scoring)，本项目所提交的[模型最终得分](https://iesdcontest.github.io/iesd-2024/Winners.html)为：
 
 | 排名   | 综合得分   | $F_\beta$   | G Score   | 推理延迟（ms）   | 存储占用（kb）   |
 |-------|-------|-------|-------|-------|-------|
@@ -53,6 +62,16 @@
 
 数据集需放在`../data/training_dataset/`路径下。
 
+## 其他尝试过的优化
+
+以下可选的优化在测试过程中没有表现出显著提升，所以没有在提交的模型中启用。
+
+- 数据预处理：FFT、归一化、标准化（见`./train/help_code.py`中的`ECG_DataSET`类的`__getitem__`函数）。
+
+- 交叉验证：见`./train/help_code.py`中的`classify_indice`、`ECG_DataSET_kfold`和`create_dataset_kfold`。可以使用`classify_indice`重新在子类中按比例划分数据集。
+
+- 随机权重平均（Stochastic Weight Averaging，SWA）：见`./train/train.py`中的`auto_train_swa`函数。需在`main`函数中使用`auto_train_swa`替换`Customized training`部分。
+
 ## 代码运行
 
 ### 模型训练
@@ -69,7 +88,7 @@
 
 ### 模型部署
 
-模型部署所需的文件位于`./deploy`文件夹下，使用方式可以参考[iesdcontest2024_demo_example_deployment](https://github.com/iesdcontest/iesdcontest2024_demo_example_deployment)中的介绍。
+模型部署所需的文件位于`./deploy`，核心文件位于`./deploy/tensorflow/lite/micro/examples/af_detection`文件夹下。使用方式可以参考[iesdcontest2024_demo_example_deployment](https://github.com/iesdcontest/iesdcontest2024_demo_example_deployment)和[iesdcontest2024_demo_example_evaluation](https://github.com/iesdcontest/iesdcontest2024_demo_example_evaluation)中的介绍。
 
 ### 测试数据可视化
 
@@ -79,3 +98,5 @@
 cd visualize/Web
 python app.py
 ```
+
+![The visualization of testing results](./visualize/visualize.gif "The visualization of testing results")
