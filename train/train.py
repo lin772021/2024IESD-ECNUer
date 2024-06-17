@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras import models, layers, optimizers, losses
+from tensorflow.keras import optimizers, losses
 import argparse
 from tqdm import tqdm
 import numpy as np
@@ -61,15 +61,15 @@ def main():
     path_indices = args.path_indices
     path_net = args.path_net
 
-    tf.random.set_seed(42)
-    np.random.seed(42)
-    random.seed(42)
+    tf.random.set_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
 
     # 
     # Instantiating NN
     # 
     # nets = [CNN_AF(seed), CNN_RNN1(seed), CNN_RNN2(seed), CNN_RNN3(seed), CNN_LSTM(seed)]
-    nets = [CNN_LSTM(seed)]
+    nets = [CNN_AF(seed)]
     # net = models.load_model(path_net + '.h5')
     # net.build(input_shape=(32, 1250, 1, 1))
     # net.summary()
@@ -77,7 +77,7 @@ def main():
     # 
     # Create datasets
     # 
-    trainset = ECG_DataSET(root_dir=path_data, indice_dir=path_indices, mode='all', size=SIZE, transform=ToTensor())
+    trainset = ECG_DataSET(root_dir=path_data, indice_dir=path_indices, mode='train', size=SIZE, transform=ToTensor())
     trainloader = create_dataset(trainset, BATCH_SIZE)
 
     testset = ECG_DataSET(root_dir=path_data, indice_dir=path_indices, mode='test', size=SIZE, transform=ToTensor())
@@ -106,7 +106,7 @@ def main():
         best_fb = 0.0  # Save the model with the best F_beta
 
         # Set TensorBoard logdir
-        writer = SummaryWriter(f'./runs/{net.name}_all')
+        writer = SummaryWriter(f'./runs/{net.name}')
         
         for epoch in range(EPOCH):
             running_loss = 0.0
@@ -195,9 +195,9 @@ def main():
             # 
             # Test by subject
             # 
-            # avg_fb, G_score = test_by_subject(net, subjectloaders)
-            # writer.add_scalar('Final F-B/Test by Subject', np.array(avg_fb), epoch + 1)
-            # writer.add_scalar('G Score/Test by Subject', np.array(G_score), epoch + 1)
+            avg_fb, G_score = test_by_subject(net, subjectloaders)
+            writer.add_scalar('Final F-B/Test by Subject', np.array(avg_fb), epoch + 1)
+            writer.add_scalar('G Score/Test by Subject', np.array(G_score), epoch + 1)
 
         net.save(f'{path_net}{net.name}_{EPOCH}.h5')
         
@@ -224,7 +224,7 @@ def main():
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--seed', type=int, help='random seed', default=64)
+    argparser.add_argument('--seed', type=int, help='random seed', default=226)
     argparser.add_argument('--epoch', type=int, help='epoch number', default=30)
     argparser.add_argument('--lr', type=float, help='learning rate', default=0.001)
     argparser.add_argument('--batchsz', type=int, help='total batchsz for traindb', default=32)

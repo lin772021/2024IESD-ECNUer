@@ -199,9 +199,12 @@ class ECG_DataSET():
             return None
 
         data = np.loadtxt(filepath).astype(np.float32)
-        # Normalize
-        # data = (data - data.mean()) / data.std()
+        # FFT
+        data = myfft(data)
+        # 归一化
         # data = (data - data.min()) / (data.max() - data.min())
+        # 标准化
+        # data = (data - data.mean()) / data.std()
         data = data.reshape(-1, 1, 1)
 
         if self.transform:
@@ -219,6 +222,26 @@ def create_dataset(data_cls, batch_size):
         output_types=(tf.float32, tf.int64),
         output_shapes=((1250, 1, 1), ())
     ).batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
+
+
+def classify_indice(src):
+    ''' 
+    根据标签类别分类写入.csv文件，用于重新划分训练集和验证集
+    通过classify_indice('train_indice.csv')调用
+    '''
+    with open(f'./data_indices/{src}', 'r', encoding='utf-8') as file:
+        # 逐行读取文件
+        for line in file:
+            if len(line.split('-')) < 2: # 跳过第一行
+                continue
+            label = line.split('-')[1]
+            filename = f'./data_indices/{label}_indice.csv'
+            
+            with open(filename, 'a', encoding='utf-8') as file:
+                if os.path.getsize(filename) == 0:
+                    file.write('label,Filename\n')
+                file.write(line)
+    return
 
 
 class ECG_DataSET_kfold():
@@ -262,7 +285,7 @@ class ECG_DataSET_kfold():
         return data
 
 
-def create_dataset_kold(data_cls, batch_size, fold_index):
+def create_dataset_kfold(data_cls, batch_size, fold_index):
     train_index, val_index = fold_index
     train_data = [data_cls[i] for i in train_index]
     val_data = [data_cls[i] for i in val_index]
