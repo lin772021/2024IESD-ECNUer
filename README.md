@@ -29,7 +29,7 @@
 | CNN-LSTM | 0.95534 | 13/14 | 13,862（54.15 KB）| 38.637 |
 | CNN-RNN | 0.95267 | 12/14 | 8,614（33.65KB）| / |
 
-据此，我们选择了$F_\beta$与G score得分较好，且推理延迟较低的CNN模型进行提交。按照大赛[评分标准](https://iesdcontest.github.io/iesd-2024/Problems.html#scoring)，本项目所提交的[模型最终得分](https://iesdcontest.github.io/iesd-2024/Winners.html)为：
+据此，我们选择了![](http://latex.codecogs.com/svg.latex?F_\\beta)与G score得分较好，且推理延迟较低的CNN模型进行提交。按照大赛[评分标准](https://iesdcontest.github.io/iesd-2024/Problems.html#scoring)，本项目所提交的[模型最终得分](https://iesdcontest.github.io/iesd-2024/Winners.html)为：
 
 | 排名   | 综合得分   | $F_\beta$   | G Score   | 推理延迟（ms）   | 存储占用（kb）   |
 |-------|-------|-------|-------|-------|-------|
